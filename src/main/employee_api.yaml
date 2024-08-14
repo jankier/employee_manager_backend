@@ -1,0 +1,189 @@
+openapi: 3.0.3
+info:
+  title: Employee Manager API
+  description: Application programming interface for STAFFSLY application allowing for accessing data about employees and all related skills and currently enrolled projects.
+  version: 1.0.0
+tags:
+  - name: Employees
+    description: Get information about all your employees
+  - name: Skills
+    description: Get information about all available skills
+  - name: Projects
+    description: Get information about all available projects
+paths:
+  /employees:
+    get:
+      tags:
+        - Employees
+      summary: Access all employees
+      description: Get all employees data
+      operationId: getEmployees
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employees'
+        '404':
+          description: Not found
+    post:
+      tags:
+        - Employees
+      summary: Add new employee
+      description: Add new employee by id
+      operationId: addEmployee
+      requestBody:
+        description: Add new employee to database
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Employee'
+      responses:
+        '200':
+          description: Success
+        '400':
+          description: Bad request
+        '404':
+          description: Not found
+  /employees/{id}:
+    get:
+      tags:
+        - Employees
+      summary: Access specified employee
+      description: Get specified employee data
+      operationId: getEmployeeById
+      parameters:
+        - name: id
+          in: path
+          description: id of employee to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+        '400':
+          description: Bad request
+        '404':
+          description: Not found
+    put:
+      tags:
+        - Employees
+      summary: Update existing employee
+      description: Update existing employee by id
+      operationId: updateEmployee
+      parameters:
+        - name: id
+          in: path
+          description: id of employee to delete
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Update an existent employee in database
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Employee'
+      responses:
+        '200':
+          description: Success
+        '400':
+          description: Bad request
+        '404':
+          description: Not found
+    delete:
+      tags:
+        - Employees
+      summary: Delete employee
+      description: Delete employee by id
+      operationId: deleteEmployee
+      parameters:
+        - name: id
+          in: path
+          description: id of employee to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+        '400':
+          description: Bad request
+        '404':
+          description: Not found
+  /skills:
+    get:
+      tags:
+        - Skills
+      summary: Access all skills
+      description: Get all skills data
+      operationId: getSkills
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Skills'
+        '404':
+          description: Not found
+  /projects:
+    get:
+      tags:
+        - Projects
+      summary: Access all projects
+      description: Get all projects data
+      operationId: getProjects
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Projects'
+        '404':
+          description: Not found
+components:
+  schemas:
+    Skills:
+      type: array
+      items:
+        type: string
+      example: [Java, Angular, Springboot]
+    Projects:
+      type: array
+      items:
+        type: string
+      example: [PZU, Orlen, LOT]
+    Employee:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "1"
+        name:
+          type: string
+          example: John
+        surname:
+          type: string
+          example: Doe
+        employmentDate:
+          type: string
+          example: 24/07/2020
+        skills:
+          $ref: '#/components/schemas/Skills'
+        projects:
+          $ref: '#/components/schemas/Projects'
+        manager:
+          type: string
+          example: Will Smith
+    Employees:
+      type: array
+      items:
+        $ref: '#/components/schemas/Employee'
