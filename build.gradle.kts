@@ -31,6 +31,10 @@ dependencies {
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+	implementation("org.mapstruct:mapstruct:1.6.0")
+	annotationProcessor("org.mapstruct:mapstruct-processor:1.6.0")
+	implementation("org.hibernate:hibernate-validator:8.0.1.Final")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
 }
 
 tasks.withType<Test> {
