@@ -7,5 +7,4 @@ import java.util.UUID;
 
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, UUID> {
-    boolean existsById(Employee employee);
 }

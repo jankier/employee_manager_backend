@@ -1,13 +1,13 @@
 package com.employee_api.springboot_bootcamp.employee;
 
-import com.employee_api.springboot_bootcamp.projects.Projects;
-import com.employee_api.springboot_bootcamp.skills.Skills;
+import com.employee_api.springboot_bootcamp.project.Project;
+import com.employee_api.springboot_bootcamp.skill.Skill;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.UUID;
@@ -16,7 +16,7 @@ import java.util.UUID;
 @Setter
 @Entity
 @RequiredArgsConstructor
-@Table(name="employee")
+@Table(name = "employee")
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -34,10 +34,11 @@ public class Employee {
     private String employmentDate;
 
     @ManyToMany
-    private List<Skills> skills;
+    private List<Skill> skills;
 
     @ManyToMany
-    private List<Projects> projects;
+    private List<Project> projects;
 
-    private String manager;
+    @ManyToOne
+    private Employee manager;
 }
