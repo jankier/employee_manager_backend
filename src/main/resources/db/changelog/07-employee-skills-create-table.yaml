@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1724403411136-5
+      author: jankier
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                  name: employee_id
+                  type: char(36)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: skills_id
+                  type: BIGINT
+            tableName: employee_skills

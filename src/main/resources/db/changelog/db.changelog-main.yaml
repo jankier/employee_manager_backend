@@ -1,0 +1,205 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1724403411136-1
+      author: Newuser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createSequence:
+            incrementBy: 1
+            sequenceName: projects_id_seq
+            startValue: 1
+  - changeSet:
+      id: 1724403411136-2
+      author: Newuser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createSequence:
+            incrementBy: 1
+            sequenceName: skills_id_seq
+            startValue: 1
+  - changeSet:
+      id: 1724403411136-3
+      author: Newuser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: employee_pkey
+                  name: id
+                  type: char(36)
+              - column:
+                  name: name
+                  type: VARCHAR(25)
+              - column:
+                  name: surname
+                  type: VARCHAR(25)
+              - column:
+                  name: employment_date
+                  type: VARCHAR(255)
+              - column:
+                  name: manager
+                  type: VARCHAR(255)
+              - column:
+                  name: manager_id
+                  type: char(36)
+            tableName: employee
+  - changeSet:
+      id: 1724403411136-4
+      author: Newuser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                  name: employee_id
+                  type: char(36)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: projects_id
+                  type: BIGINT
+            tableName: employee_projects
+  - changeSet:
+      id: 1724403411136-5
+      author: Newuser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                  name: employee_id
+                  type: char(36)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: skills_id
+                  type: BIGINT
+            tableName: employee_skills
+  - changeSet:
+      id: 1724403411136-6
+      author: Newuser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: projects_pkey
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: description
+                  type: VARCHAR(500)
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+            tableName: projects
+  - changeSet:
+      id: 1724403411136-7
+      author: Newuser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: skills_pkey
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+            tableName: skills
+  - changeSet:
+      id: 1724403411136-8
+      author: Newuser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: name
+            constraintName: uk1e447b96pedrvtxw44ot4qxem
+            tableName: projects
+  - changeSet:
+      id: 1724403411136-9
+      author: Newuser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: name
+            constraintName: uk85woe63nu9klkk9fa73vf0jd0
+            tableName: skills
+  - changeSet:
+      id: 1724403411136-10
+      author: Newuser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: projects_id
+            baseTableName: employee_projects
+            constraintName: fk3sgbaquxg0uqjqui01h9tvc5q
+            onDelete: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: projects
+  - changeSet:
+      id: 1724403411136-11
+      author: Newuser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: skills_id
+            baseTableName: employee_skills
+            constraintName: fk8gyvp36eysxc5o4taxnjahali
+            onDelete: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: skills
+  - changeSet:
+      id: 1724403411136-12
+      author: Newuser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: employee_id
+            baseTableName: employee_projects
+            constraintName: fk97jl81fsrbblkqfoqwg2o7yps
+            onDelete: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: employee
+  - changeSet:
+      id: 1724403411136-13
+      author: Newuser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: employee_id
+            baseTableName: employee_skills
+            constraintName: fknepe51hewn4dd673e3qk1v2qx
+            onDelete: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: employee
+  - changeSet:
+      id: 1724403411136-14
+      author: Newuser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: manager_id
+            baseTableName: employee
+            constraintName: fkou6wbxug1d0qf9mabut3xqblo
+            onDelete: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: employee
+

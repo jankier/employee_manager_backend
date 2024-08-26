@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1724403411136-6
+      author: jankier
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: projects_pkey
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: description
+                  type: VARCHAR(500)
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+            tableName: projects
+        - addUniqueConstraint:
+            columnNames: name
+            constraintName: uk1e447b96pedrvtxw44ot4qxem
+            tableName: projects

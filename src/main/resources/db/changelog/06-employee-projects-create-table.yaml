@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1724403411136-4
+      author: jankier
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                  name: employee_id
+                  type: char(36)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: projects_id
+                  type: BIGINT
+            tableName: employee_projects

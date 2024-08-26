@@ -1,0 +1,24 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1724403411136-7
+      author: jankier
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: skills_pkey
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+            tableName: skills
+        - addUniqueConstraint:
+            columnNames: name
+            constraintName: uk85woe63nu9klkk9fa73vf0jd0
+            tableName: skills

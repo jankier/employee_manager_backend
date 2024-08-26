@@ -1,0 +1,5 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1724403411136-7
+      author: jankier
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
