@@ -2,6 +2,7 @@ package com.employee_api.springboot_bootcamp.employee;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class EmployeeService {
 
     @Transactional
     public List<EmployeeDTO> getAll() {
-        return employeeRepository.findAll().stream().map(employeeMapper::mapToDto).collect(Collectors.toList());
+        return employeeRepository.findAll(Sort.by(Sort.Direction.ASC, "id")).stream().map(employeeMapper::mapToDto).collect(Collectors.toList());
     }
 
     @Transactional
