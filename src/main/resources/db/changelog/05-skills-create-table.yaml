@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 1724403411136-7
+      id: 1724403411136-5
       author: jankier
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -20,5 +20,5 @@ databaseChangeLog:
             tableName: skills
         - addUniqueConstraint:
             columnNames: name
-            constraintName: uk85woe63nu9klkk9fa73vf0jd0
+            constraintName: unique_skill_name
             tableName: skills

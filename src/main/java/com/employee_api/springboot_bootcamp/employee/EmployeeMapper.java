@@ -8,4 +8,6 @@ public interface EmployeeMapper {
     EmployeeDTO mapToDto(Employee employee);
 
     Employee mapToEntity(EmployeeDTO employeeDTO);
+    
+    Employee mapToEntity(PostEmployeeDTO employeeDTO);
 }

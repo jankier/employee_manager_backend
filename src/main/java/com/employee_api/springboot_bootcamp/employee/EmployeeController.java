@@ -14,6 +14,7 @@ import java.util.UUID;
 @Slf4j
 @RequestMapping("api/v1/employees")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:4200")
 public class EmployeeController {
 
     private final EmployeeService employeeService;
@@ -22,10 +23,9 @@ public class EmployeeController {
     public ResponseEntity<List<EmployeeDTO>> getAllEmployees() {
         List<EmployeeDTO> employeeDTO = employeeService.getAll();
         if (employeeDTO.isEmpty()) {
-            log.info("No employee found");
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            log.info("No employees/managers found");
         }
-        log.info("Fetched all employees");
+        log.info("Fetched all employees/managers");
         return new ResponseEntity<>(employeeDTO, HttpStatus.OK);
     }
 
@@ -36,8 +36,15 @@ public class EmployeeController {
         return new ResponseEntity<>(employeeDTO, HttpStatus.OK);
     }
 
+    @GetMapping("managers/{id}")
+    public ResponseEntity<List<EmployeeDTO>> getAllManagers(@PathVariable UUID id) {
+        List<EmployeeDTO> employeeDTO = employeeService.getManagers(id);
+        log.info("Fetched all managers for manager with id {}", id);
+        return new ResponseEntity<>(employeeDTO, HttpStatus.OK);
+    }
+
     @PostMapping
-    public ResponseEntity<Object> addEmployee(@Valid @RequestBody EmployeeDTO employeeDTO) {
+    public ResponseEntity<Object> addEmployee(@Valid @RequestBody PostEmployeeDTO employeeDTO) {
         employeeService.create(employeeDTO);
         log.info("Employee created successfully with {}", employeeDTO);
         return new ResponseEntity<>(HttpStatus.CREATED);

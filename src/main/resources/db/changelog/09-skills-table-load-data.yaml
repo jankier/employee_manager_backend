@@ -1,5 +1,9 @@
 databaseChangeLog:
   - changeSet:
-      id: 1724403411136-7
+      id: 1724403411136-9
       author: jankier
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - loadData:
+            file: db/data/skills.csv
+            tableName: skills

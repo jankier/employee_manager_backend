@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 1724403411136-5
+      id: 1724403411136-7
       author: jankier
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -10,10 +10,22 @@ databaseChangeLog:
                   constraints:
                     nullable: false
                   name: employee_id
-                  type: char(36)
+                  type: UUID
               - column:
                   constraints:
                     nullable: false
                   name: skills_id
                   type: BIGINT
             tableName: employee_skills
+        - addForeignKeyConstraint:
+            baseColumnNames: skills_id
+            baseTableName: employee_skills
+            constraintName: fk_skill_id
+            referencedColumnNames: id
+            referencedTableName: skills
+        - addForeignKeyConstraint:
+            baseColumnNames: employee_id
+            baseTableName: employee_skills
+            constraintName: fk_employee_id
+            referencedColumnNames: id
+            referencedTableName: employee
