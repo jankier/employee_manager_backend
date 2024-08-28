@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -16,6 +15,6 @@ public class SkillService {
 
     @Transactional
     public List<SkillDTO> getAll() {
-        return skillRepository.findAll().stream().map(skillMapper::mapToDto).collect(Collectors.toList());
+        return skillRepository.findAll().stream().map(skillMapper::mapToDto).toList();
     }
 }

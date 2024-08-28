@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -21,7 +20,7 @@ public class EmployeeService {
 
     @Transactional
     public List<EmployeeDTO> getAll() {
-        return employeeRepository.findAll(Sort.by(Sort.Direction.ASC, "id")).stream().map(employeeMapper::mapToDto).collect(Collectors.toList());
+        return employeeRepository.findAll(Sort.by(Sort.Direction.ASC, "id")).stream().map(employeeMapper::mapToDto).toList();
     }
 
     @Transactional
@@ -85,6 +84,6 @@ public class EmployeeService {
                 return subordinatesList.stream();
             }
             return Stream.empty();
-        }).collect(Collectors.toList());
+        }).toList();
     }
 }

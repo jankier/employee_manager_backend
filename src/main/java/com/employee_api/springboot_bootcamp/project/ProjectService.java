@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -17,7 +16,7 @@ public class ProjectService {
 
     @Transactional
     public List<ProjectDTO> getAll() {
-        return projectRepository.findAll().stream().map(projectMapper::mapToDto).collect(Collectors.toList());
+        return projectRepository.findAll().stream().map(projectMapper::mapToDto).toList();
     }
 
     @Transactional
