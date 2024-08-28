@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -84,6 +85,6 @@ public class EmployeeService {
                 return subordinatesList.stream();
             }
             return Stream.empty();
-        }).toList();
+        }).collect(Collectors.toList());
     }
 }
