@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1724403411136-8
+      author: jankier
+      changes:
+        - loadData:
+            file: db/data/projects.csv
+            tableName: projects

@@ -1,0 +1,31 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1724403411136-6
+      author: jankier
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                  name: employee_id
+                  type: UUID
+              - column:
+                  constraints:
+                    nullable: false
+                  name: projects_id
+                  type: BIGINT
+            tableName: employee_projects
+        - addForeignKeyConstraint:
+            baseColumnNames: projects_id
+            baseTableName: employee_projects
+            constraintName: fk_project_id
+            referencedColumnNames: id
+            referencedTableName: projects
+        - addForeignKeyConstraint:
+            baseColumnNames: employee_id
+            baseTableName: employee_projects
+            constraintName: fk_employee_id
+            referencedColumnNames: id
+            referencedTableName: employee

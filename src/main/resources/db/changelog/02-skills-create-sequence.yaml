@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1724403411136-2
+      author: jankier
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createSequence:
+            incrementBy: 1
+            sequenceName: skills_id_seq
+            startValue: 1
