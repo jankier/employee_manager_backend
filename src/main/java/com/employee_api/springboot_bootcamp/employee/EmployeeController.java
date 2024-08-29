@@ -44,14 +44,14 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> addEmployee(@Valid @RequestBody PostEmployeeDTO employeeDTO) {
+    public ResponseEntity<HttpStatus> addEmployee(@Valid @RequestBody PostEmployeeDTO employeeDTO) {
         employeeService.create(employeeDTO);
         log.info("Employee created successfully with {}", employeeDTO);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping
-    public ResponseEntity<Object> updateEmployee(@Valid @RequestBody EmployeeDTO employeeDTO) {
+    public ResponseEntity<HttpStatus> updateEmployee(@Valid @RequestBody EmployeeDTO employeeDTO) {
         EmployeeDTO selectedEmployee = employeeService.getById(employeeDTO.id());
         employeeService.update(selectedEmployee, employeeDTO);
         log.info("Employee updated successfully with {}", employeeDTO);
@@ -59,7 +59,7 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteEmployee(@PathVariable UUID id) {
+    public ResponseEntity<HttpStatus> deleteEmployee(@PathVariable UUID id) {
         EmployeeDTO employeeDTO = employeeService.getById(id);
         employeeService.delete(employeeDTO);
         log.info("Employee deleted successfully with {}", employeeDTO);

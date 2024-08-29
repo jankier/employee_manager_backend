@@ -83,7 +83,10 @@ public class EmployeeService {
                 employeeDTO.manager(),
                 currentRole
         );
-        employeeRepository.save(employeeMapper.mapToEntity(updatedEmployee));
+        Employee employee = employeeMapper.mapToEntity(updatedEmployee);
+        employee.setUsername((employeeDTO.name() + employeeDTO.surname()).toLowerCase());
+        employee.setPassword(passwordEncoder.encode(employeeDTO.surname().toLowerCase()));
+        employeeRepository.save(employee);
     }
 
     @Transactional
