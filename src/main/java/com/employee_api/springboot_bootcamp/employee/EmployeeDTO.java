@@ -1,6 +1,7 @@
 package com.employee_api.springboot_bootcamp.employee;
 
 import com.employee_api.springboot_bootcamp.constraints.NotSameId;
+import com.employee_api.springboot_bootcamp.enums.Role;
 import com.employee_api.springboot_bootcamp.project.ProjectDTO;
 import com.employee_api.springboot_bootcamp.skill.Skill;
 import jakarta.validation.constraints.NotEmpty;
@@ -22,6 +23,7 @@ public record EmployeeDTO(
         String employmentDate,
         List<Skill> skills,
         List<ProjectDTO> projects,
-        ManagerDTO manager) {
+        ManagerDTO manager,
+        Role role) {
 
 }

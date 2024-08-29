@@ -1,8 +1,10 @@
 package com.employee_api.springboot_bootcamp.employee;
 
+import com.employee_api.springboot_bootcamp.enums.Role;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +20,7 @@ public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
     private final EmployeeMapper employeeMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public List<EmployeeDTO> getAll() {
@@ -49,11 +52,27 @@ public class EmployeeService {
 
     @Transactional
     public void create(PostEmployeeDTO employeeDTO) {
-        employeeRepository.save(employeeMapper.mapToEntity(employeeDTO));
+        Role currentRole;
+        if (employeeDTO.manager() == null) {
+            currentRole = Role.ADMIN;
+        } else {
+            currentRole = Role.USER;
+        }
+        Employee employee = employeeMapper.mapToEntity(employeeDTO);
+        employee.setRole(currentRole);
+        employee.setUsername((employeeDTO.name() + employeeDTO.surname()).toLowerCase());
+        employee.setPassword(passwordEncoder.encode(employeeDTO.surname().toLowerCase()));
+        employeeRepository.save(employee);
     }
 
     @Transactional
     public void update(EmployeeDTO selectedEmployee, EmployeeDTO employeeDTO) {
+        Role currentRole;
+        if (employeeDTO.manager() == null) {
+            currentRole = Role.ADMIN;
+        } else {
+            currentRole = Role.USER;
+        }
         EmployeeDTO updatedEmployee = new EmployeeDTO(
                 selectedEmployee.id(),
                 employeeDTO.name(),
@@ -61,7 +80,8 @@ public class EmployeeService {
                 employeeDTO.employmentDate(),
                 employeeDTO.skills(),
                 employeeDTO.projects(),
-                employeeDTO.manager()
+                employeeDTO.manager(),
+                currentRole
         );
         employeeRepository.save(employeeMapper.mapToEntity(updatedEmployee));
     }
