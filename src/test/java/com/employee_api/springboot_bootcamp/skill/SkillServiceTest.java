@@ -61,7 +61,7 @@ class SkillServiceTest {
     }
 
     @Test
-    void skillServiceIsCreated() {
+    void skillServiceShouldBeCreated() {
         assertThat(underTest).isNotNull();
     }
 

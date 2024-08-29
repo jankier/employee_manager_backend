@@ -77,7 +77,7 @@ class EmployeeServiceTest {
     }
 
     @Test
-    void employeeServiceIsCreated() {
+    void employeeServiceShouldBeCreated() {
         assertThat(underTest).isNotNull();
     }
 
@@ -99,14 +99,14 @@ class EmployeeServiceTest {
     }
 
     @Test
-    void givenIdThrowNoSuchElementExceptionOnGet() {
+    void givenNonExistentIdShouldThrowNoSuchElementExceptionOnGetEmployee() {
         UUID nonExistingId = UUID.randomUUID();
         when(employeeRepository.findById(nonExistingId)).thenReturn(Optional.empty());
         assertThatExceptionOfType(NoSuchElementException.class).isThrownBy(() -> underTest.getById(nonExistingId));
     }
 
     @Test
-    void givenIdReturnEmployee() {
+    void givenIdShouldReturnEmployee() {
         when(employeeRepository.findById(employee.getId())).thenReturn(Optional.of(employee));
         when(employeeMapper.mapToDto(employee)).thenReturn(employeeDTO);
         EmployeeDTO result = underTest.getById(employee.getId());
@@ -114,7 +114,7 @@ class EmployeeServiceTest {
     }
 
     @Test
-    void givenIdReturnEmptyManagersList() {
+    void givenIdShouldReturnEmptyManagersList() {
         List<EmployeeDTO> emptyManagerList = new ArrayList<>();
         when(employeeRepository.findAll(Sort.by(Sort.Direction.ASC, "id"))).thenReturn(employees);
         when(employeeMapper.mapToDto(employee)).thenReturn(employeeDTO);
@@ -124,7 +124,7 @@ class EmployeeServiceTest {
     }
 
     @Test
-    void givenIdReturnManagersList() {
+    void givenIdShouldReturnManagersList() {
         List<EmployeeDTO> managerList = new ArrayList<>();
         managerList.add(employeeDTO);
         when(employeeRepository.findAll(Sort.by(Sort.Direction.ASC, "id"))).thenReturn(employees);
@@ -135,7 +135,7 @@ class EmployeeServiceTest {
     }
 
     @Test
-    void givenValidRequestBodyPostEmployee() {
+    void givenValidRequestBodyShouldAddNewEmployee() {
         PostEmployeeDTO postEmployeeDTO = new PostEmployeeDTO(employeeDTO.id(), employeeDTO.name(), employeeDTO.surname(), employeeDTO.employmentDate(), null, null, null);
         when(employeeMapper.mapToEntity(postEmployeeDTO)).thenReturn(employee);
         underTest.create(postEmployeeDTO);
@@ -143,7 +143,7 @@ class EmployeeServiceTest {
     }
 
     @Test
-    void givenInvalidRequestBodyThrowConstraintViolationExceptionOnPost() {
+    void givenInvalidRequestBodyShouldThrowConstraintViolationExceptionOnAddNewEmployee() {
         employee.setName("");
         PostEmployeeDTO postEmployeeDTO = new PostEmployeeDTO(employeeDTO.id(), "", employeeDTO.surname(), employeeDTO.employmentDate(), null, null, null);
         when(employeeMapper.mapToEntity(postEmployeeDTO)).thenReturn(employee);
@@ -152,7 +152,7 @@ class EmployeeServiceTest {
     }
 
     @Test
-    void givenValidRequestBodyPutEmployee() {
+    void givenValidRequestBodyShouldModifyExistingEmployee() {
         EmployeeDTO updatedEmployee = new EmployeeDTO(
                 employeeDTO.id(),
                 employeeDTO2.name(),
@@ -168,7 +168,7 @@ class EmployeeServiceTest {
     }
 
     @Test
-    void givenValidRequestBodyDeleteEmployee() {
+    void givenValidRequestBodyShouldDeleteExistingEmployee() {
         when(employeeRepository.findAll(Sort.by(Sort.Direction.ASC, "id"))).thenReturn(employees);
         when(employeeMapper.mapToDto(employee)).thenReturn(employeeDTO);
         when(employeeMapper.mapToDto(employee2)).thenReturn(employeeDTO2);
@@ -178,7 +178,7 @@ class EmployeeServiceTest {
     }
 
     @Test
-    void givenEmployeeThrowIllegalArgumentExceptionOnDelete() {
+    void givenEmployeeWhoIsManagerShouldThrowIllegalArgumentExceptionOnDeleteEmployee() {
         when(employeeRepository.findAll(Sort.by(Sort.Direction.ASC, "id"))).thenReturn(employees);
         when(employeeMapper.mapToDto(employee)).thenReturn(employeeDTO);
         when(employeeMapper.mapToDto(employee2)).thenReturn(employeeDTO2);

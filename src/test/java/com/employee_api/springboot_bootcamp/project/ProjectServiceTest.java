@@ -69,7 +69,7 @@ class ProjectServiceTest {
     }
 
     @Test
-    void projectServiceIsCreated() {
+    void projectServiceShouldBeCreated() {
         assertThat(underTest).isNotNull();
     }
 
@@ -91,14 +91,14 @@ class ProjectServiceTest {
     }
 
     @Test
-    void givenIdThrowNoSuchElementExceptionOnGet() {
+    void givenInvalidIdShouldThrowNoSuchElementExceptionOnGetProject() {
         Long nonExistingId = 3L;
         when(projectRepository.findById(nonExistingId)).thenReturn(Optional.empty());
         assertThatExceptionOfType(NoSuchElementException.class).isThrownBy(() -> underTest.getById(nonExistingId));
     }
 
     @Test
-    void givenIdReturnProject() throws NoSuchElementException {
+    void givenIdShouldReturnProject() throws NoSuchElementException {
         when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
         when(projectMapper.mapToAllDto(project)).thenReturn(projectAllDTO);
         ProjectAllDTO result = underTest.getById(project.getId());
