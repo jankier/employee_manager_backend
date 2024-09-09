@@ -2,6 +2,7 @@ package com.employee_api.springboot_bootcamp.project;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,11 +17,13 @@ public class ProjectService {
     private final ProjectMapper projectMapper;
 
     @Transactional
+    @PreAuthorize("hasAuthority('ADMIN')")
     public List<ProjectDTO> getAll() {
         return projectRepository.findAll().stream().map(projectMapper::mapToDto).collect(Collectors.toList());
     }
 
     @Transactional
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ProjectAllDTO getById(Long id) {
         return projectRepository.findById(id).map(projectMapper::mapToAllDto).orElseThrow(() -> new NoSuchElementException(String.format("Project with the given id %s does not exist", id)));
     }

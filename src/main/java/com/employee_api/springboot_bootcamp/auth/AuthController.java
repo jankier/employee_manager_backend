@@ -18,9 +18,9 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<HttpStatus> loginEmployee(@RequestBody AuthRequest authRequest) {
-        authService.login(authRequest);
-        log.info("Employee logged in with");
-        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    public ResponseEntity<AuthResponse> loginEmployee(@RequestBody AuthRequest authRequest) {
+        AuthResponse response = authService.login(authRequest);
+        log.info("Employee logged in");
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 }

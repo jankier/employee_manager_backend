@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -58,6 +59,12 @@ public class ControllerExceptionAdvice {
     public ResponseEntity<ApiError> handleUsernameNotFoundException(UsernameNotFoundException exception, WebRequest request) {
         log.error("Username not found with: {}", exception.getMessage(), exception);
         return createResponse(exception, HttpStatus.NOT_FOUND, request);
+    }
+
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ResponseEntity<ApiError> handleInternalServerErrorException(AuthorizationDeniedException exception, WebRequest request) {
+        log.error("Access denied with: {}", exception.getMessage(), exception);
+        return createResponse(exception, HttpStatus.FORBIDDEN, request);
     }
 
     @ExceptionHandler(Exception.class)

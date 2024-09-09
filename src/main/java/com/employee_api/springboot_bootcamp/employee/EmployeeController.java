@@ -14,7 +14,6 @@ import java.util.UUID;
 @Slf4j
 @RequestMapping("api/v1/employees")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200")
 public class EmployeeController {
 
     private final EmployeeService employeeService;
@@ -44,22 +43,28 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public ResponseEntity<HttpStatus> addEmployee(@Valid @RequestBody PostEmployeeDTO employeeDTO) {
+    public ResponseEntity<Object> addEmployee(@Valid @RequestBody PostEmployeeDTO employeeDTO) {
         employeeService.create(employeeDTO);
         log.info("Employee created successfully with {}", employeeDTO);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PutMapping
-    public ResponseEntity<HttpStatus> updateEmployee(@Valid @RequestBody EmployeeDTO employeeDTO) {
-        EmployeeDTO selectedEmployee = employeeService.getById(employeeDTO.id());
-        employeeService.update(selectedEmployee, employeeDTO);
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> updateEmployee(@PathVariable UUID id, @Valid @RequestBody EmployeeDTO employeeDTO) {
+        employeeService.update(id, employeeDTO);
         log.info("Employee updated successfully with {}", employeeDTO);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PutMapping("/password/{id}")
+    public ResponseEntity<Object> updatePassword(@PathVariable UUID id, @RequestBody PasswordRequest passwordRequest) {
+        employeeService.updatePassword(id, passwordRequest);
+        log.info("Password updated successfully");
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> deleteEmployee(@PathVariable UUID id) {
+    public ResponseEntity<Object> deleteEmployee(@PathVariable UUID id) {
         EmployeeDTO employeeDTO = employeeService.getById(id);
         employeeService.delete(employeeDTO);
         log.info("Employee deleted successfully with {}", employeeDTO);
