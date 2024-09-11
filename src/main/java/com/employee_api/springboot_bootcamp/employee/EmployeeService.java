@@ -15,6 +15,8 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.employee_api.springboot_bootcamp.variables.Authority.ADMIN;
+
 @Service
 @RequiredArgsConstructor
 public class EmployeeService {
@@ -29,14 +31,14 @@ public class EmployeeService {
     }
 
     @Transactional
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize(ADMIN)
     public EmployeeDTO getById(UUID id) {
         return employeeRepository.findById(id).map(employeeMapper::mapToDto).orElseThrow(() ->
                 new NoSuchElementException(String.format("Employee with the given id %s does not exist", id)));
     }
 
     @Transactional
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize(ADMIN)
     public List<EmployeeDTO> getManagers(UUID id) {
         List<EmployeeDTO> employees = this.getAll();
         List<EmployeeDTO> subordinates = employees.stream().flatMap(employee -> {
@@ -54,7 +56,7 @@ public class EmployeeService {
     }
 
     @Transactional
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize(ADMIN)
     public void create(PostEmployeeDTO employeeDTO) {
         Role currentRole;
         if (employeeDTO.manager() == null) {
@@ -70,7 +72,7 @@ public class EmployeeService {
     }
 
     @Transactional
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize(ADMIN)
     public void update(UUID id, EmployeeDTO employeeDTO) {
         Role currentRole;
         if (employeeDTO.manager() == null) {
@@ -105,7 +107,7 @@ public class EmployeeService {
     }
 
     @Transactional
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize(ADMIN)
     public void delete(EmployeeDTO employeeDTO) {
         List<EmployeeDTO> employees = this.getAll();
         List<EmployeeDTO> subordinates = employees.stream()

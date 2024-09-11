@@ -37,6 +37,7 @@ dependencies {
     implementation("org.hibernate:hibernate-validator:8.0.1.Final")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
     implementation("org.liquibase:liquibase-core")
+    implementation("org.passay:passay:1.6.5")
 }
 
 tasks.withType<Test> {

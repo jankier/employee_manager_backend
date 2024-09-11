@@ -43,28 +43,28 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> addEmployee(@Valid @RequestBody PostEmployeeDTO employeeDTO) {
+    public ResponseEntity<HttpStatus> addEmployee(@Valid @RequestBody PostEmployeeDTO employeeDTO) {
         employeeService.create(employeeDTO);
         log.info("Employee created successfully with {}", employeeDTO);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateEmployee(@PathVariable UUID id, @Valid @RequestBody EmployeeDTO employeeDTO) {
+    public ResponseEntity<HttpStatus> updateEmployee(@PathVariable UUID id, @Valid @RequestBody EmployeeDTO employeeDTO) {
         employeeService.update(id, employeeDTO);
         log.info("Employee updated successfully with {}", employeeDTO);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/password/{id}")
-    public ResponseEntity<Object> updatePassword(@PathVariable UUID id, @RequestBody PasswordRequest passwordRequest) {
+    public ResponseEntity<HttpStatus> updatePassword(@PathVariable UUID id, @Valid @RequestBody PasswordRequest passwordRequest) {
         employeeService.updatePassword(id, passwordRequest);
         log.info("Password updated successfully");
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteEmployee(@PathVariable UUID id) {
+    public ResponseEntity<HttpStatus> deleteEmployee(@PathVariable UUID id) {
         EmployeeDTO employeeDTO = employeeService.getById(id);
         employeeService.delete(employeeDTO);
         log.info("Employee deleted successfully with {}", employeeDTO);

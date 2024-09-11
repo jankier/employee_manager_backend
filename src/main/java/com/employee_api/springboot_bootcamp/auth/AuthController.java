@@ -21,6 +21,6 @@ public class AuthController {
     public ResponseEntity<AuthResponse> loginEmployee(@RequestBody AuthRequest authRequest) {
         AuthResponse response = authService.login(authRequest);
         log.info("Employee logged in");
-        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

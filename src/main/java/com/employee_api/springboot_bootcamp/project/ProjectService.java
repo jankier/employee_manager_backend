@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
+import static com.employee_api.springboot_bootcamp.variables.Authority.ADMIN;
+
 @Service
 @RequiredArgsConstructor
 public class ProjectService {
@@ -17,13 +19,13 @@ public class ProjectService {
     private final ProjectMapper projectMapper;
 
     @Transactional
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize(ADMIN)
     public List<ProjectDTO> getAll() {
         return projectRepository.findAll().stream().map(projectMapper::mapToDto).collect(Collectors.toList());
     }
 
     @Transactional
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize(ADMIN)
     public ProjectAllDTO getById(Long id) {
         return projectRepository.findById(id).map(projectMapper::mapToAllDto).orElseThrow(() -> new NoSuchElementException(String.format("Project with the given id %s does not exist", id)));
     }
