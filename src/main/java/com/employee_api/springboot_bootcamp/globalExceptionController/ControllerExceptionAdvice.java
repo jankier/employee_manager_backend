@@ -4,6 +4,9 @@ import com.employee_api.springboot_bootcamp.globalExceptionController.model.ApiE
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -44,6 +47,24 @@ public class ControllerExceptionAdvice {
     public ResponseEntity<ApiError> handleNoSuchElementException(NoSuchElementException exception, WebRequest request) {
         log.error("Not found with: {}", exception.getMessage(), exception);
         return createResponse(exception, HttpStatus.NOT_FOUND, request);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ApiError> handleBadCredentialsException(BadCredentialsException exception, WebRequest request) {
+        log.error("Unauthorized with: {}", exception.getMessage(), exception);
+        return createResponse(exception, HttpStatus.UNAUTHORIZED, request);
+    }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<ApiError> handleUsernameNotFoundException(UsernameNotFoundException exception, WebRequest request) {
+        log.error("Username not found with: {}", exception.getMessage(), exception);
+        return createResponse(exception, HttpStatus.NOT_FOUND, request);
+    }
+
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ResponseEntity<ApiError> handleInternalServerErrorException(AuthorizationDeniedException exception, WebRequest request) {
+        log.error("Access denied with: {}", exception.getMessage(), exception);
+        return createResponse(exception, HttpStatus.FORBIDDEN, request);
     }
 
     @ExceptionHandler(Exception.class)

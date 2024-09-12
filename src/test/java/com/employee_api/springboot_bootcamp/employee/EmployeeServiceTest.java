@@ -163,7 +163,7 @@ class EmployeeServiceTest {
                 employeeDTO2.manager()
         );
         when(employeeMapper.mapToEntity(updatedEmployee)).thenReturn(employee);
-        underTest.update(employeeDTO, employeeDTO2);
+        underTest.update(employeeDTO.id(), employeeDTO2);
         verify(employeeRepository).save(employee);
     }
 

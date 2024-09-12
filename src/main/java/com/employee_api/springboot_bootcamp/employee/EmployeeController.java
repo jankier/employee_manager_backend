@@ -14,7 +14,6 @@ import java.util.UUID;
 @Slf4j
 @RequestMapping("api/v1/employees")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200")
 public class EmployeeController {
 
     private final EmployeeService employeeService;
@@ -50,11 +49,17 @@ public class EmployeeController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PutMapping
-    public ResponseEntity<HttpStatus> updateEmployee(@Valid @RequestBody EmployeeDTO employeeDTO) {
-        EmployeeDTO selectedEmployee = employeeService.getById(employeeDTO.id());
-        employeeService.update(selectedEmployee, employeeDTO);
+    @PutMapping("/{id}")
+    public ResponseEntity<HttpStatus> updateEmployee(@PathVariable UUID id, @Valid @RequestBody EmployeeDTO employeeDTO) {
+        employeeService.update(id, employeeDTO);
         log.info("Employee updated successfully with {}", employeeDTO);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/password/{id}")
+    public ResponseEntity<HttpStatus> updatePassword(@PathVariable UUID id, @Valid @RequestBody PasswordRequest passwordRequest) {
+        employeeService.updatePassword(id, passwordRequest);
+        log.info("Password updated successfully");
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

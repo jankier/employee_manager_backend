@@ -1,8 +1,11 @@
 package com.employee_api.springboot_bootcamp.employee;
 
+import com.employee_api.springboot_bootcamp.enums.Role;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,12 +15,15 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.employee_api.springboot_bootcamp.variables.Authority.ADMIN;
+
 @Service
 @RequiredArgsConstructor
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
     private final EmployeeMapper employeeMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public List<EmployeeDTO> getAll() {
@@ -25,12 +31,14 @@ public class EmployeeService {
     }
 
     @Transactional
+    @PreAuthorize(ADMIN)
     public EmployeeDTO getById(UUID id) {
         return employeeRepository.findById(id).map(employeeMapper::mapToDto).orElseThrow(() ->
                 new NoSuchElementException(String.format("Employee with the given id %s does not exist", id)));
     }
 
     @Transactional
+    @PreAuthorize(ADMIN)
     public List<EmployeeDTO> getManagers(UUID id) {
         List<EmployeeDTO> employees = this.getAll();
         List<EmployeeDTO> subordinates = employees.stream().flatMap(employee -> {
@@ -48,25 +56,62 @@ public class EmployeeService {
     }
 
     @Transactional
+    @PreAuthorize(ADMIN)
     public void create(PostEmployeeDTO employeeDTO) {
-        employeeRepository.save(employeeMapper.mapToEntity(employeeDTO));
+        Role currentRole;
+        if (employeeDTO.manager() == null) {
+            currentRole = Role.ADMIN;
+        } else {
+            currentRole = Role.USER;
+        }
+        Employee employee = employeeMapper.mapToEntity(employeeDTO);
+        employee.setRole(currentRole);
+        employee.setUsername((employeeDTO.name() + employeeDTO.surname()).toLowerCase());
+        employee.setPassword(passwordEncoder.encode(employeeDTO.surname().toLowerCase()));
+        employeeRepository.save(employee);
     }
 
     @Transactional
-    public void update(EmployeeDTO selectedEmployee, EmployeeDTO employeeDTO) {
+    @PreAuthorize(ADMIN)
+    public void update(UUID id, EmployeeDTO employeeDTO) {
+        Role currentRole;
+        if (employeeDTO.manager() == null) {
+            currentRole = Role.ADMIN;
+        } else {
+            currentRole = Role.USER;
+        }
+        Employee currentEmployee = this.employeeRepository.findById(id).orElseThrow(() ->
+                new NoSuchElementException(String.format("Employee with the given id %s does not exist", id)));
         EmployeeDTO updatedEmployee = new EmployeeDTO(
-                selectedEmployee.id(),
+                id,
                 employeeDTO.name(),
                 employeeDTO.surname(),
                 employeeDTO.employmentDate(),
                 employeeDTO.skills(),
                 employeeDTO.projects(),
-                employeeDTO.manager()
+                employeeDTO.manager(),
+                currentRole
         );
-        employeeRepository.save(employeeMapper.mapToEntity(updatedEmployee));
+        Employee employee = employeeMapper.mapToEntity(updatedEmployee);
+        employee.setUsername(currentEmployee.getUsername());
+        employee.setPassword(currentEmployee.getPassword());
+        employeeRepository.save(employee);
     }
 
     @Transactional
+    public void updatePassword(UUID id, PasswordRequest passwordRequest) {
+        Employee employee = this.employeeRepository.findById(id).orElseThrow(() ->
+                new NoSuchElementException(String.format("Employee with the given id %s does not exist", id)));
+        if (passwordEncoder.matches(passwordRequest.currentPassword(), employee.getPassword())) {
+            employee.setPassword(passwordEncoder.encode(passwordRequest.newPassword()));
+            employeeRepository.save(employee);
+        } else {
+            throw new IllegalArgumentException("Given current password is incorrect");
+        }
+    }
+
+    @Transactional
+    @PreAuthorize(ADMIN)
     public void delete(EmployeeDTO employeeDTO) {
         List<EmployeeDTO> employees = this.getAll();
         List<EmployeeDTO> subordinates = employees.stream()
