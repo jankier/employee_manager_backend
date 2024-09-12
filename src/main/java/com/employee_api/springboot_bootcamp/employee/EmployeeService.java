@@ -80,6 +80,8 @@ public class EmployeeService {
         } else {
             currentRole = Role.USER;
         }
+        Employee currentEmployee = this.employeeRepository.findById(id).orElseThrow(() ->
+                new NoSuchElementException(String.format("Employee with the given id %s does not exist", id)));
         EmployeeDTO updatedEmployee = new EmployeeDTO(
                 id,
                 employeeDTO.name(),
@@ -91,6 +93,8 @@ public class EmployeeService {
                 currentRole
         );
         Employee employee = employeeMapper.mapToEntity(updatedEmployee);
+        employee.setUsername(currentEmployee.getUsername());
+        employee.setPassword(currentEmployee.getPassword());
         employeeRepository.save(employee);
     }
 
