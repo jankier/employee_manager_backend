@@ -27,7 +27,7 @@ public class EmployeeService {
 
     @Transactional
     public List<EmployeeDTO> getAll() {
-        return employeeRepository.findAll(Sort.by(Sort.Direction.ASC, "id")).stream().map(employeeMapper::mapToDto).collect(Collectors.toList());
+        return employeeRepository.findAll(Sort.by(Sort.Direction.ASC, "id")).stream().map(employeeMapper::mapToDto).toList();
     }
 
     @Transactional

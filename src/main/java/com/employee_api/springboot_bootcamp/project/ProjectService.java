@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 import static com.employee_api.springboot_bootcamp.variables.Authority.ADMIN;
 
@@ -21,7 +20,7 @@ public class ProjectService {
     @Transactional
     @PreAuthorize(ADMIN)
     public List<ProjectDTO> getAll() {
-        return projectRepository.findAll().stream().map(projectMapper::mapToDto).collect(Collectors.toList());
+        return projectRepository.findAll().stream().map(projectMapper::mapToDto).toList();
     }
 
     @Transactional
